@@ -1,0 +1,94 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cadastro de Equipamentos</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+    input, select {
+      width: 100%;
+      padding: 8px;
+      margin: 8px 0;
+    }
+    button {
+      background: #4CAF50;
+      color: white;
+      padding: 10px;
+      border: none;
+      width: 100%;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Cadastro de Equipamento</h2>
+  <form id="equipForm">
+    <label>Nº Tombo</label>
+    <input type="text" id="tombo" required />
+
+    <label>Descrição</label>
+    <input type="text" id="descricao" required />
+
+    <label>Marca/Modelo</label>
+    <input type="text" id="marcaModelo" required />
+
+    <label>Localização</label>
+    <input type="text" id="localizacao" required />
+
+    <label>Responsável</label>
+    <input type="text" id="responsavel" required />
+
+    <label>Estado de Conservação</label>
+    <select id="estado" required>
+      <option value="">Selecione</option>
+      <option value="Novo">Novo</option>
+      <option value="Usado">Usado</option>
+      <option value="Danificado">Danificado</option>
+    </select>
+
+    <button type="submit">Salvar</button>
+  </form>
+
+  <p id="mensagem"></p>
+
+  <script>
+    const form = document.getElementById('equipForm');
+    const mensagem = document.getElementById('mensagem');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const dados = {
+        tombo: document.getElementById('tombo').value,
+        descricao: document.getElementById('descricao').value,
+        marcaModelo: document.getElementById('marcaModelo').value,
+        localizacao: document.getElementById('localizacao').value,
+        responsavel: document.getElementById('responsavel').value,
+        estado: document.getElementById('estado').value
+      };
+
+      try {
+        const resposta = await fetch('https://script.google.com/macros/s/AKfycbx1JFVaiBIxW53mNI5CRFK4WbWBRtYlcv4HtFQEY9afZ5bGwFaeVpxjxOjiqy9XR_GzYw/exec', {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(dados)
+        });
+
+        mensagem.innerText = "Equipamento registrado com sucesso!";
+        form.reset();
+      } catch (error) {
+        mensagem.innerText = "Erro ao enviar os dados.";
+        console.error(error);
+      }
+    });
+  </script>
+</body>
+</html>
